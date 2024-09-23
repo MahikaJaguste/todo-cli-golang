@@ -11,6 +11,12 @@ import (
 
 func main() {
 
+	home, homeDirErr := os.UserHomeDir()
+	db.HomeDir = home
+	if homeDirErr != nil {
+		log.Fatalln("Failed to set up ToDo App :(")
+	}
+
 	initFileErr := db.InitFile()
 	if initFileErr != nil {
 		log.Fatalln("Failed to set up ToDo App database :(")

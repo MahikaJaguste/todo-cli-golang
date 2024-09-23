@@ -3,24 +3,22 @@ package db
 import (
 	"encoding/csv"
 	"os"
-	"path/filepath"
 	"strconv"
 
 	"github.com/MahikaJaguste/todocli/schema"
 )
 
-const FilePath = "./tasks.csv"
+var HomeDir = ""
 
-func GetFilePath() (string, error) {
-	filePath, filePathErr := filepath.Abs(FilePath)
-	return filePath, filePathErr
+const FilePath = "/todocli-tasks.csv"
+
+func GetFilePath() string {
+	filePath := HomeDir + FilePath
+	return filePath
 }
 
 func InitFile() error {
-	filePath, filePathErr := GetFilePath()
-	if filePathErr != nil {
-		return filePathErr
-	}
+	filePath := GetFilePath()
 
 	file, fileErr := os.OpenFile(filePath, os.O_CREATE, 0644)
 	if fileErr != nil {
@@ -32,10 +30,7 @@ func InitFile() error {
 }
 
 func GetFile(isAppend bool) (*os.File, error) {
-	filePath, filePathErr := GetFilePath()
-	if filePathErr != nil {
-		return nil, filePathErr
-	}
+	filePath := GetFilePath()
 
 	flag := os.O_RDONLY
 	if isAppend {
